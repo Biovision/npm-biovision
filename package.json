@@ -1,0 +1,22 @@
+{
+  "name": "@biovision/biovision",
+  "version": "0.0.1",
+  "description": "Minimal JS part for biovision-based applications",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Biovision/npm-biovision.git"
+  },
+  "keywords": [
+    "biovision"
+  ],
+  "author": "Maxim Khan-Magomedov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Biovision/npm-biovision/issues"
+  },
+  "homepage": "https://github.com/Biovision/npm-biovision#readme"
+}

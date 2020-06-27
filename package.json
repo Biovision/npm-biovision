@@ -1,6 +1,6 @@
 {
   "name": "@biovision/biovision",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Minimal JS part for biovision-based applications",
   "main": "index.js",
   "scripts": {
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/Biovision/npm-biovision/issues"
   },
-  "homepage": "https://github.com/Biovision/npm-biovision#readme"
+  "homepage": "https://github.com/Biovision/npm-biovision#readme",
+  "files": [
+    "/index.js"
+  ]
 }

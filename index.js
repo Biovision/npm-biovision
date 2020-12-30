@@ -1,4 +1,4 @@
-"use strict";
+import LoginForm from "./components/login_form";
 
 const Biovision = {
     locale: "",
@@ -2083,6 +2083,8 @@ Biovision.components.simpleImageUploader = {
         container.querySelector(".load-image").classList.add("hidden");
     }
 }
+
+Biovision.components.loginForm = LoginForm;
 
 window.Biovision = Biovision;
 

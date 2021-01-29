@@ -1,6 +1,6 @@
 {
   "name": "@biovision/biovision",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "Minimal JS part for biovision-based applications",
   "main": "index.js",
   "scripts": {
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Biovision/npm-biovision#readme",
   "files": [
-    "/index.js"
+    "/index.js",
+    "components"
   ]
 }

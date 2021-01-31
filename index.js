@@ -181,50 +181,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', function (event) {
         const element = event.target;
 
-        // Запирание/отпирание сущности (иконка с замком)
-        if (element.matches('li.lock > a img')) {
-            event.preventDefault();
-
-            const container = element.closest('li');
-            const button = element.closest('a');
-            const lockable = container.parentElement.querySelectorAll('.lockable');
-            const url = container.getAttribute('data-url');
-
-            if (url.length > 1) {
-                const method = button.classList.contains('lock') ? 'PUT' : 'DELETE';
-
-                const request = Biovision.newAjaxRequest(method, url, function () {
-                    const response = JSON.parse(this.responseText);
-
-                    if (response.hasOwnProperty('data') && response['data'].hasOwnProperty('locked')) {
-                        const locked = response['data']['locked'];
-
-                        if (locked) {
-                            lockable.forEach(function (button) {
-                                button.classList.add('hidden')
-                            });
-                        } else {
-                            lockable.forEach(function (button) {
-                                button.classList.remove('hidden')
-                            });
-                        }
-
-                        container.querySelectorAll('a').forEach(function (button) {
-                            const classes = button.classList;
-
-                            if (classes.contains('lock')) {
-                                locked ? classes.add('hidden') : classes.remove('hidden');
-                            } else {
-                                locked ? classes.remove('hidden') : classes.add('hidden');
-                            }
-                        });
-                    }
-                });
-
-                request.send();
-            }
-        }
-
         // Переключение флагов сущности
         if (element.matches('div.toggleable > span')) {
             if (!element.classList.contains('switch')) {

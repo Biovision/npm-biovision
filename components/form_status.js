@@ -1,4 +1,5 @@
 const FormStatus = {
+    id: "formStatus",
     initialized: false,
     selector: 'form[data-remote]',
     elements: [],

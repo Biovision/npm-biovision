@@ -1,4 +1,5 @@
 const Transliterator = {
+    id: "transliterator",
     initialized: false,
     selector: '[data-transliterate]',
     elements: [],

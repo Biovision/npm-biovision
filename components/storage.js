@@ -1,4 +1,5 @@
 const Storage = {
+    id: "storage",
     initialized: false,
     session: {
         set: function (key, value) {

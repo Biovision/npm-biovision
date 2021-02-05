@@ -1,4 +1,5 @@
 const SimpleImageUploader = {
+    id: "simpleImageUploader",
     selector: ".js-simple-image-upload",
     newImageSelector: ".js-new-image",
     selectImageSelector: ".js-select-image",

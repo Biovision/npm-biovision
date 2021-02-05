@@ -1,4 +1,5 @@
 const AdminUserSearch = {
+    id: "adminUserSearch",
     initialized: false,
     selector: ".js-admin-user-search",
     url: undefined,

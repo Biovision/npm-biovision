@@ -1,4 +1,5 @@
 const Carousel = {
+    id: "carousel",
     /**
      * Component is initialized
      *

@@ -1,4 +1,5 @@
 const AutoExpand = {
+    id: "autoExpand",
     initialized: false,
     selector: 'textarea.auto-expand',
     elements: [],

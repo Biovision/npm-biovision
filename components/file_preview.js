@@ -4,6 +4,7 @@
  * @type {Object}
  */
 const FilePreview = {
+    id: "filePreview",
     /**
      * @type {Boolean}
      */

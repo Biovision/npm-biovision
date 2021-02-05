@@ -1,5 +1,6 @@
 // Поиск пользователя в админке
 const UserSearch = {
+    id: "userSearch",
     initialized: false,
     selector: '.user-search button',
     elements: [],

@@ -1,4 +1,5 @@
 const NewComponentParameter = {
+    id: "newComponentParameter",
     initialized: false,
     container: undefined,
     url: undefined,

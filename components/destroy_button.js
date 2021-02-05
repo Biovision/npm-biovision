@@ -1,5 +1,6 @@
 // Кнопка удаления элемента через AJAX
 const DestroyButton = {
+    id: "destroyButton",
     initialized: false,
     selector: 'div[data-destroy-url] button.destroy',
     elements: [],

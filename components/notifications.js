@@ -1,4 +1,5 @@
 const Notifications = {
+    id: "notifications",
     initialized: false,
     autoInitComponents: true,
     components: {},

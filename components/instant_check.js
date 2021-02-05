@@ -4,6 +4,7 @@
  * @type {Object}
  */
 const InstantCheck = {
+    id: "instantCheck",
     initialized: false,
     selector: 'form[data-check-url]',
     elements: [],

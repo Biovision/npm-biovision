@@ -5,6 +5,7 @@
  * @type {Object}
  */
 const VideoStretcher = {
+    id: "videoStretcher",
     /**
      * Component is initialized
      *

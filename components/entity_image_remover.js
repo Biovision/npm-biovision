@@ -1,4 +1,5 @@
 const EntityImageRemover = {
+    id: "entityImageRemover",
     initialized: false,
     selector: '.remove-image-button',
     elements: [],

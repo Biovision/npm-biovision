@@ -1,4 +1,5 @@
 const Socialization = {
+    id: "socialization",
     initialized: false,
     components: {},
     autoInitComponents: true,

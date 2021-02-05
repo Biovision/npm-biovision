@@ -1,4 +1,5 @@
 const AnimatedNumbers = {
+    id: "animatedNumbers",
     initialized: false,
     selector: ".js-animated-numbers",
     containers: [],

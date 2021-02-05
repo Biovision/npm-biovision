@@ -1,32 +1,29 @@
 const Forms = {
+    id: "forms",
     /**
-     * Показать список ошибок после обработки формы
+     * Show list of errors after form is processed
      *
-     * Используется в контроллерах при отправке форм через remote: true
+     * Used in controllers when processing forms with remote: true
      *
-     * @param {string} modelName название модели
-     * @param {Array<string>} list список ошибок
+     * @param {string} modelName
+     * @param {Array<string>} list
      */
     showErrors: function (modelName, list) {
-        const form = document.getElementById(modelName + "-form");
+        const form = document.getElementById(`${modelName}-form`);
         if (form) {
+            const data = list.map((message) => `<li>${message}</li>`);
             let errors = form.querySelector("ol.errors");
-            let data = "";
 
             if (!errors) {
                 errors = document.createElement("ol");
                 errors.classList.add("errors");
+                form.prepend(errors);
             }
 
-            list.forEach(function (message) {
-                data += "<li>" + message + "</li>";
-            });
-
-            errors.innerHTML = data;
-
-            form.prepend(errors);
-
+            errors.innerHTML = data.join();
             errors.scrollIntoView();
+        } else {
+            console.warn(`Cannot find form for model ${modelName}`)
         }
     },
     /**
@@ -42,14 +39,13 @@ const Forms = {
     switchElements: function (formId, hideSelector, showSelector) {
         const form = document.getElementById(formId);
         if (form) {
-            form.querySelectorAll(showSelector).forEach(function (element) {
-                element.classList.remove("hidden");
-            });
-            form.querySelectorAll(hideSelector).forEach(function (element) {
-                element.classList.add("hidden");
-            });
+            const show = (element) => element.classList.remove("hidden");
+            const hide = (element) => element.classList.add("hidden");
+
+            form.querySelectorAll(showSelector).forEach(show);
+            form.querySelectorAll(hideSelector).forEach(hide);
         } else {
-            console.log("Cannot find element with id " + formId)
+            console.warn(`Cannot find element with id ${formId}`);
         }
     },
     showError: function (formId, message) {
@@ -59,13 +55,12 @@ const Forms = {
                 let container = form.querySelector(".message-box.error");
                 if (!container) {
                     container = document.createElement("div");
-                    container.classList.add("message-box");
-                    container.classList.add("error");
+                    container.classList.add("message-box", "error");
                     form.prepend(container);
                 }
                 container.innerHTML = message;
             } else {
-                console.log("Cannot find form " + formId);
+                console.warn(`Cannot find form ${formId}`);
             }
         }
     }

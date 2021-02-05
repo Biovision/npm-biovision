@@ -4,6 +4,7 @@
  * @type {Object}
  */
 const TopLinker = {
+    id: "topLinker",
     /**
      * @type {Boolean}
      */

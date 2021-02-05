@@ -4,6 +4,7 @@
  * @type {Object}
  */
 const EntityLinker = {
+    id: "entityLinker",
     /**
      * @type {Boolean}
      */

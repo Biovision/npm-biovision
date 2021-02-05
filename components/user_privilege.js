@@ -1,4 +1,5 @@
 const UserPrivilege = {
+    id: "userPrivilege",
     initialized: false,
     selector: ".js-component-added-users",
     list: undefined,

@@ -4,6 +4,7 @@
  * @type {Object}
  */
 const HidingPopups = {
+    id: "hidingPopups",
     /**
      * @type {Boolean}
      */

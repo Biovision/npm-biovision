@@ -1,4 +1,5 @@
 const Oembed = {
+    id: "oembed",
     initialized: false,
     selector: "oembed",
     init: function () {

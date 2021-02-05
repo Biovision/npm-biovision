@@ -1,4 +1,5 @@
 const AjaxDeleteButton = {
+    id: "ajaxDeleteButton",
     initialized: false,
     selector: 'button.destroy[data-url]',
     elements: [],

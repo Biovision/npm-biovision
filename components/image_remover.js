@@ -1,4 +1,5 @@
 const ImageRemover = {
+    id: "imageRemover",
     initialized: false,
     selector: ".js-image-remover",
     buttons: [],

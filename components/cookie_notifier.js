@@ -1,4 +1,5 @@
 const CookieNotifier = {
+    id: "cookieNotifier",
     initialized: false,
     selector: "cookie-info",
     container: undefined,

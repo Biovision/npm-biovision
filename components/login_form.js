@@ -6,6 +6,7 @@
  * @type {Object}
  */
 const LoginForm = {
+    id: "loginForm",
     /**
      * Form id (HTML attribute)
      *

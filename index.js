@@ -1,82 +1,65 @@
 import LoginForm from "./components/login_form";
 import InstantCheck from "./components/instant_check";
 import Forms from "./components/forms";
-import TopLinker from "./components/top_linker";
 import FilePreview from "./components/file_preview";
 import EntityLinker from "./components/entity_linker";
 import Transliterator from "./components/transliterator";
 import FormStatus from "./components/form_status";
-import AutoExpand from "./components/auto_expand";
-import EntityImageRemover from "./components/entity_image_remover";
-import ImageRemover from "./components/image_remover";
 import AjaxDeleteButton from "./components/ajax_delete_button";
-import Storage from "./components/storage";
 import UserSearch from "./components/user_search";
 import DestroyButton from "./components/destroy_button";
 import AdminUserSearch from "./components/admin_user_search";
 import UserPrivilege from "./components/user_privilege";
-import HidingPopups from "./components/hiding_popups";
 import ComponentParameters from "./components/component_parameters";
 import NewComponentParameter from "./components/new_component_parameter";
-import CookieNotifier from "./components/cookie_notifier";
-import AnimatedNumbers from "./components/animated_numbers";
-import Carousel from "./components/carousel";
 import Notifications from "./components/notifications";
-import Oembed from "./components/oembed";
 import Socialization from "./components/socialization";
-import VideoStretcher from "./components/video_stretcher";
 import SimpleImageUploader from "./components/simple_image_uploader";
+
+// topLinker, autoExpand, entityImageRemover, imageRemover, Storage,
+// hidingPopups, cookieNotifier, carousel, animatedNumbers, oembed,
+// videoStretcher
 
 const Biovision = {
     locale: "",
     csrfToken: "",
-    components: {
-        loginForm: LoginForm,
-        instantCheck: InstantCheck,
-        forms: Forms,
-        topLinker: TopLinker,
-        filePreview: FilePreview,
-        entityLinker: EntityLinker,
-        transliterator: Transliterator,
-        formStatus: FormStatus,
-        autoExpand: AutoExpand,
-        entityImageRemover: EntityImageRemover,
-        imageRemover: ImageRemover,
-        ajaxDeleteButton: AjaxDeleteButton,
-        storage: Storage,
-        destroyButton: DestroyButton,
-        userSearch: UserSearch,
-        adminUserSearch: AdminUserSearch,
-        userPrivilege: UserPrivilege,
-        hidingPopups: HidingPopups,
-        componentParameters: ComponentParameters,
-        newComponentParameter: NewComponentParameter,
-        cookieNotifier: CookieNotifier,
-        animatedNumbers: AnimatedNumbers,
-        carousel: Carousel,
-        notifications: Notifications,
-        oembed: Oembed,
-        socialization: Socialization,
-        videoStretcher: VideoStretcher,
-        simpleImageUploader: SimpleImageUploader
-    },
+    components: {},
     init: function () {
         this.locale = document.querySelector("html").getAttribute("lang");
-        this.csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+        const metaToken = document.querySelector('meta[name="csrf-token"]');
+        if (metaToken) {
+            this.csrfToken = metaToken.getAttribute("content");
+        }
 
-        for (let componentName in this.components) {
-            if (this.components.hasOwnProperty(componentName)) {
-                const component = this.components[componentName];
-                if (component.hasOwnProperty("init")) {
-                    component.init();
-                }
+        const defaultComponents = [
+            LoginForm, InstantCheck, Forms, FilePreview, EntityLinker,
+            Transliterator, FormStatus, AjaxDeleteButton, DestroyButton,
+            UserSearch, AdminUserSearch, UserPrivilege, ComponentParameters,
+            NewComponentParameter, Notifications, Socialization,
+            SimpleImageUploader
+        ];
 
-                if (component.hasOwnProperty("autoInitComponents")) {
-                    if (component.autoInitComponents) {
-                        this.initChildComponents(component);
-                    }
+        defaultComponents.forEach((component) => Biovision.addComponent(component));
+    },
+    /**
+     * Add component to list
+     *
+     * @param {Object} component
+     */
+    addComponent: function (component) {
+        if (component.hasOwnProperty("id")) {
+            Biovision.components[component.id] = component;
+            if (component.hasOwnProperty("init")) {
+                component.init();
+            }
+
+            if (component.hasOwnProperty("autoInitComponents")) {
+                if (component.autoInitComponents) {
+                    Biovision.initChildComponents(component);
                 }
             }
+        } else {
+            console.warn("Component has no id");
         }
     },
     /**

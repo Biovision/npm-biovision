@@ -1,6 +1,6 @@
 {
   "name": "@biovision/biovision",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Minimal JS part for biovision-based applications",
   "main": "index.js",
   "scripts": {

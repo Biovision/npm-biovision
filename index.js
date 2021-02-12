@@ -24,6 +24,7 @@ const Biovision = {
     locale: "",
     csrfToken: "",
     components: {},
+    componentQueue: [],
     init: function () {
         this.locale = document.querySelector("html").getAttribute("lang");
         const metaToken = document.querySelector('meta[name="csrf-token"]');
@@ -39,14 +40,19 @@ const Biovision = {
             SimpleImageUploader
         ];
 
-        defaultComponents.forEach((component) => Biovision.addComponent(component));
+        defaultComponents.forEach((component) => Biovision.loadComponent(component));
+
+        let component;
+        while (component = this.componentQueue.shift()) {
+            this.loadComponent(component);
+        }
     },
     /**
      * Add component to list
      *
      * @param {Object} component
      */
-    addComponent: function (component) {
+    loadComponent: function (component) {
         if (component.hasOwnProperty("id")) {
             Biovision.components[component.id] = component;
             if (component.hasOwnProperty("init")) {
@@ -61,6 +67,9 @@ const Biovision = {
         } else {
             console.warn("Component has no id");
         }
+    },
+    addComponent: function (component) {
+        Biovision.componentQueue.push(component);
     },
     /**
      * Init child components of given component

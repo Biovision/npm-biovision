@@ -151,17 +151,31 @@ const Biovision = {
      * @type {Function}
      */
     handleAjaxFailure: function () {
-        console.log("AJAX failed", this);
+        console.warn("AJAX failed", this);
     },
     execute: function (name, context) {
         const args = Array.prototype.slice.call(arguments, 2);
         const namespaces = name.split(".");
         const func = namespaces.pop();
-        for(let i = 0; i < namespaces.length; i++) {
+        for (let i = 0; i < namespaces.length; i++) {
             context = context[namespaces[i]];
         }
 
         return context[func].apply(context, args);
+    },
+    fetchJson: async function (method, url, data = {}, headers = {}) {
+        headers["Content-Type"] = "application/json";
+        headers["Accept"] = "application/json";
+        headers["X-CSRF-Token"] = Biovision.csrfToken;
+
+        const options = {
+            body: JSON.stringify(data),
+            headers: headers,
+            method: method
+        }
+        const response = await fetch(url, options);
+
+        return await response.json();
     }
 };
 

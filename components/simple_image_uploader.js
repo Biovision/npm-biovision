@@ -9,7 +9,7 @@ const SimpleImageUploader = {
         document.querySelectorAll(this.selector).forEach(this.apply)
     },
     apply: function (element) {
-        const component = Biovision.components.simpleImageUploader;
+        const component = SimpleImageUploader;
         const newImage = element.querySelector(component.newImageSelector);
         if (newImage) {
             component.buttons.push(newImage);
@@ -22,32 +22,32 @@ const SimpleImageUploader = {
         }
         const figure = element.querySelector("figure");
         const fileField = element.querySelector('input[type="file"]');
-        fileField.dataset.image = figure.id;
-        fileField.addEventListener("change", component.preview);
-        const uploadButton = element.querySelector("button.upload");
-        uploadButton.addEventListener("click", component.handleUpload);
-        component.applyBrowser(element.querySelector(".browse-images"));
+        component.applyFileField(fileField, figure);
     },
     applyBrowser: function (container) {
-        const component = Biovision.components.simpleImageUploader;
-        const handler = component.updateImageList;
+        const handler = SimpleImageUploader.updateImageList;
         container.querySelectorAll("button").forEach(e => e.addEventListener("click", handler));
         container.querySelector(".current").addEventListener("change", handler);
         container.querySelector(".filter").addEventListener("input", handler);
     },
+    applyFileField: function (fileField, figure) {
+        fileField.dataset.image = figure.id;
+        fileField.addEventListener("change", SimpleImageUploader.handleFileChange);
+    },
     handleClickNew: function (event) {
-        const component = Biovision.components.simpleImageUploader;
         const target = event.target;
-        const container = target.closest(component.selector);
-        component.showLoadImage(container);
+        const container = target.closest(SimpleImageUploader.selector);
+        SimpleImageUploader.hideBrowse(container);
     },
     showLoadImage: function (container) {
         container.querySelector(".load-image").classList.remove("hidden");
         container.querySelector(".browse-images").classList.add("hidden");
     },
     showBrowse: function (container) {
-        container.querySelector(".load-image").classList.add("hidden");
         container.querySelector(".browse-images").classList.remove("hidden");
+    },
+    hideBrowse: function (container) {
+        container.querySelector(".browse-images").classList.add("hidden");
     },
     preview: function (event) {
         const input = event.target;
@@ -57,26 +57,23 @@ const SimpleImageUploader = {
             input.classList.add("changed");
         }
     },
-    handleUpload: function (event) {
-        const component = Biovision.components.simpleImageUploader;
-        const button = event.target;
-        const container = button.closest(".load-image");
-        const file = container.querySelector("input");
+    handleFileChange: function (event) {
+        const file = event.target;
         if (file.files.length > 0) {
-            const url = button.closest(".js-change").dataset.url;
-            const label = button.closest(component.selector).querySelector(".current-image");
+            const container = file.closest(SimpleImageUploader.selector);
+            const url = file.closest(".js-change").dataset.url;
+            const label = container.querySelector(".current-image");
             const form = new FormData();
             form.append("simple_image[image]", file.files[0]);
-            ["caption", "image_alt_text", "source_name", "source_link"].forEach(function (key) {
-                const field = container.querySelector(`[data-name="${key}"]`);
-                if (field && field.value) {
-                    form.append(`simple_image[${key}]`, field.value);
-                }
-            });
+            // ["caption", "image_alt_text", "source_name", "source_link"].forEach(function (key) {
+            //     const field = container.querySelector(`[data-name="${key}"]`);
+            //     if (field && field.value) {
+            //         form.append(`simple_image[${key}]`, field.value);
+            //     }
+            // });
             const request = Biovision.newAjaxRequest("post", url, function () {
                 const response = JSON.parse(this.responseText);
                 if (response.hasOwnProperty("data")) {
-                    const container = button.closest(component.selector);
                     const input = container.querySelector('input[type="hidden"]');
                     if (input) {
                         input.value = response.data.id;
@@ -86,32 +83,29 @@ const SimpleImageUploader = {
                         label.classList.remove("progress");
                     }
                 }
-
-                container.classList.add("hidden");
             });
 
             if (label) {
                 label.classList.add("progress");
-                label.style.setProperty("--percent", 0);
+                label.style.setProperty("--progress", 0);
                 request.upload.addEventListener("progress", function (e) {
                     const percent = (e.loaded / e.total) * 100;
 
-                    label.style.setProperty("--percent", `${percent}%`);
+                    label.style.setProperty("--progress", `${percent}%`);
+                    console.log(percent);
                 });
             }
 
-            button.disabled = true;
             request.send(form);
         }
     },
     handleClickSelect: function (event) {
-        const component = Biovision.components.simpleImageUploader;
         const target = event.target;
-        const container = target.closest(component.selector);
-        component.showBrowse(container);
+        const container = target.closest(SimpleImageUploader.selector);
+        SimpleImageUploader.showBrowse(container);
 
         const url = container.querySelector(".js-change").dataset.url;
-        component.loadImages(container, url);
+        SimpleImageUploader.loadImages(container, url);
     },
     addPagination: function (container, links) {
         ["first", "prev", "next", "last"].forEach(function (type) {
@@ -124,19 +118,17 @@ const SimpleImageUploader = {
         current.max = new URL(links.last, location.origin).searchParams.get("page");
     },
     addImageList: function (container, data) {
-        const component = Biovision.components.simpleImageUploader;
         const ul = container.querySelector("ul");
         ul.innerHTML = "";
         data.forEach(function (imageData) {
             if (imageData.hasOwnProperty("data")) {
-                component.addImage(ul, imageData.data);
+                SimpleImageUploader.addImage(ul, imageData.data);
             }
         });
     },
     updateImageList: function (event) {
         const target = event.target;
-        const component = Biovision.components.simpleImageUploader;
-        const container = target.closest(component.selector);
+        const container = target.closest(SimpleImageUploader.selector);
         const section = target.closest(".js-change");
         const parameters = new URLSearchParams();
         let url;
@@ -153,24 +145,22 @@ const SimpleImageUploader = {
         } else if (target.type === "button") {
             url = target.dataset.url;
         }
-        component.loadImages(container, url);
+        SimpleImageUploader.loadImages(container, url);
     },
     loadImages: function (container, url) {
-        const component = Biovision.components.simpleImageUploader;
         const request = Biovision.jsonAjaxRequest("get", url, function () {
             const response = JSON.parse(this.responseText);
             const section = container.querySelector(".browse-images");
             if (response.hasOwnProperty("links")) {
-                component.addPagination(section, response.links);
+                SimpleImageUploader.addPagination(section, response.links);
             }
             if (response.hasOwnProperty("data")) {
-                component.addImageList(section, response.data);
+                SimpleImageUploader.addImageList(section, response.data);
             }
         });
         request.send();
     },
     addImage: function (list, data) {
-        const component = Biovision.components.simpleImageUploader;
         const li = document.createElement("li");
         const imageWrapper = document.createElement("div");
         imageWrapper.classList.add("image");
@@ -178,16 +168,16 @@ const SimpleImageUploader = {
         image.src = data.meta.url.preview;
         image.dataset.url = data.meta.url.medium;
         image.dataset.id = data.id;
-        image.addEventListener("click", component.selectImage);
+        image.addEventListener("click", SimpleImageUploader.selectImage);
         imageWrapper.append(image);
         const dataWrapper = document.createElement("div");
         dataWrapper.classList.add("data");
-        component.addImageField(dataWrapper, data.meta.name, []);
-        component.addImageField(dataWrapper, data.meta.size, ["info"]);
-        component.addImageField(dataWrapper, data.meta.object_count, ["secondary", "info"]);
+        SimpleImageUploader.addImageField(dataWrapper, data.meta.name, []);
+        SimpleImageUploader.addImageField(dataWrapper, data.meta.size, ["info"]);
+        SimpleImageUploader.addImageField(dataWrapper, data.meta.object_count, ["secondary", "info"]);
         ["caption", "image_alt_text"].forEach(function (key) {
             if (data.attributes[key]) {
-                component.addImageField(dataWrapper, data.attributes[key], ["secondary", "info"]);
+                SimpleImageUploader.addImageField(dataWrapper, data.attributes[key], ["secondary", "info"]);
             }
         });
         li.append(imageWrapper);
@@ -205,9 +195,8 @@ const SimpleImageUploader = {
         wrapper.append(div);
     },
     selectImage: function (event) {
-        const component = Biovision.components.simpleImageUploader;
         const image = event.target;
-        const container = image.closest(component.selector)
+        const container = image.closest(SimpleImageUploader.selector)
         const currentImage = container.querySelector(".current-image img");
         currentImage.src = image.dataset.url;
         const imageId = container.querySelector('input[type="hidden"]');

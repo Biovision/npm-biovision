@@ -13,6 +13,7 @@ import UserPrivilege from "./components/user_privilege";
 import ComponentParameters from "./components/component_parameters";
 import NewComponentParameter from "./components/new_component_parameter";
 import Notifications from "./components/notifications";
+import QuickSearch from "./components/quick_search";
 import Socialization from "./components/socialization";
 import SimpleImageUploader from "./components/simple_image_uploader";
 
@@ -36,7 +37,7 @@ const Biovision = {
             LoginForm, InstantCheck, Forms, FilePreview, EntityLinker,
             Transliterator, FormStatus, AjaxDeleteButton, DestroyButton,
             UserSearch, AdminUserSearch, UserPrivilege, ComponentParameters,
-            NewComponentParameter, Notifications, Socialization,
+            NewComponentParameter, Notifications, QuickSearch, Socialization,
             SimpleImageUploader
         ];
 

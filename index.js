@@ -3,6 +3,7 @@ import InstantCheck from "./components/instant_check";
 import Forms from "./components/forms";
 import FilePreview from "./components/file_preview";
 import EntityLinker from "./components/entity_linker";
+import EntityListWithSearch from "./components/entity_list_with_search";
 import Transliterator from "./components/transliterator";
 import FormStatus from "./components/form_status";
 import AjaxDeleteButton from "./components/ajax_delete_button";
@@ -35,10 +36,10 @@ const Biovision = {
 
         const defaultComponents = [
             LoginForm, InstantCheck, Forms, FilePreview, EntityLinker,
-            Transliterator, FormStatus, AjaxDeleteButton, DestroyButton,
-            UserSearch, AdminUserSearch, UserPrivilege, ComponentParameters,
-            NewComponentParameter, Notifications, QuickSearch, Socialization,
-            SimpleImageUploader
+            EntityListWithSearch, Transliterator, FormStatus, AjaxDeleteButton,
+            DestroyButton, UserSearch, AdminUserSearch, UserPrivilege,
+            ComponentParameters, NewComponentParameter, Notifications,
+            QuickSearch, Socialization, SimpleImageUploader
         ];
 
         defaultComponents.forEach((component) => Biovision.loadComponent(component));

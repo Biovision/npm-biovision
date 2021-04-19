@@ -4,6 +4,7 @@ import Forms from "./components/forms";
 import FilePreview from "./components/file_preview";
 import EntityLinker from "./components/entity_linker";
 import EntityListWithSearch from "./components/entity_list_with_search";
+import EntityPriority from "./components/entity_priority";
 import Transliterator from "./components/transliterator";
 import FormStatus from "./components/form_status";
 import AjaxDeleteButton from "./components/ajax_delete_button";
@@ -36,10 +37,10 @@ const Biovision = {
 
         const defaultComponents = [
             LoginForm, InstantCheck, Forms, FilePreview, EntityLinker,
-            EntityListWithSearch, Transliterator, FormStatus, AjaxDeleteButton,
-            DestroyButton, UserSearch, AdminUserSearch, UserPrivilege,
-            ComponentParameters, NewComponentParameter, Notifications,
-            QuickSearch, Socialization, SimpleImageUploader
+            EntityListWithSearch, EntityPriority, Transliterator, FormStatus,
+            AjaxDeleteButton, DestroyButton, UserSearch, AdminUserSearch,
+            UserPrivilege, ComponentParameters, NewComponentParameter,
+            Notifications, QuickSearch, Socialization, SimpleImageUploader
         ];
 
         defaultComponents.forEach((component) => Biovision.loadComponent(component));
@@ -224,58 +225,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 data.append('parameter', parameter);
 
                 element.className = 'switch';
-
-                request.send(data);
-            }
-        }
-
-        // Изменение порядка сортировки элементов
-        if (element.matches('li.priority-changer > button')) {
-            const delta = parseInt(element.getAttribute('data-delta'));
-            const url = element.parentNode.getAttribute('data-url');
-            let item = element.closest('li[data-number]');
-
-            if (parseInt(item.getAttribute('data-number')) + delta > 0) {
-                const onSuccess = function () {
-                    const response = JSON.parse(this.responseText);
-
-                    if (response.hasOwnProperty('data')) {
-                        const data = response.data;
-                        const container = item.parentNode;
-                        const list = Array.prototype.slice.call(container.children);
-
-                        if (data.hasOwnProperty('priority')) {
-                            item.setAttribute('data-number', data.priority);
-                        } else {
-                            for (let entity_id in data) {
-                                if (data.hasOwnProperty(entity_id)) {
-                                    item = container.querySelector('li[data-id="' + entity_id + '"]');
-                                    item.setAttribute('data-number', data[entity_id]);
-                                }
-                            }
-                        }
-
-                        list.sort(function (a, b) {
-                            let an = parseInt(a.getAttribute('data-number'));
-                            let bn = parseInt(b.getAttribute('data-number'));
-
-                            if (an > bn) {
-                                return 1;
-                            } else if (an < bn) {
-                                return -1;
-                            } else {
-                                return 0;
-                            }
-                        }).forEach(function (item) {
-                            container.appendChild(item);
-                        });
-                    }
-                };
-
-                const request = Biovision.newAjaxRequest('POST', url, onSuccess);
-
-                const data = new FormData();
-                data.append('delta', String(delta));
 
                 request.send(data);
             }

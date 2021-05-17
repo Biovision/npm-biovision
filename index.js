@@ -18,6 +18,7 @@ import Notifications from "./components/notifications";
 import QuickSearch from "./components/quick_search";
 import Socialization from "./components/socialization";
 import SimpleImageUploader from "./components/simple_image_uploader";
+import SearchableList from "./components/searchable_list";
 
 // topLinker, autoExpand, entityImageRemover, imageRemover, Storage,
 // hidingPopups, cookieNotifier, carousel, animatedNumbers, oembed,
@@ -40,10 +41,11 @@ const Biovision = {
             EntityListWithSearch, EntityPriority, Transliterator, FormStatus,
             AjaxDeleteButton, DestroyButton, UserSearch, AdminUserSearch,
             UserPrivilege, ComponentParameters, NewComponentParameter,
-            Notifications, QuickSearch, Socialization, SimpleImageUploader
+            Notifications, QuickSearch, Socialization, SimpleImageUploader,
+            SearchableList
         ];
 
-        defaultComponents.forEach((component) => Biovision.loadComponent(component));
+        defaultComponents.forEach(component => Biovision.loadComponent(component));
 
         let component;
         while (component = this.componentQueue.shift()) {

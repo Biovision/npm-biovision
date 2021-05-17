@@ -14,26 +14,34 @@ const EntityListWithSearch = {
         if (input.value.length > 0) {
             const container = input.closest(EntityListWithSearch.selector);
             const url = new URL(input.dataset.url);
-            const prefix = container.dataset.prefix;
+            let pattern;
+            if (container.hasAttribute("data-prefix")) {
+                pattern = container.dataset.prefix + "__id__";
+            } else {
+                pattern = container.dataset.pattern;
+            }
 
             url.searchParams.append("q", input.value);
 
             const results = container.querySelector(".results");
 
-            fetch(url.href).then(r => r.json()).then(data => EntityListWithSearch.processResponse(data, results, prefix));
+            fetch(url.href)
+                .then(r => r.json())
+                .then(data => EntityListWithSearch.processResponse(data, results, pattern));
         }
     },
-    processResponse: function (response, container, prefix) {
+    processResponse: function (response, container, pattern) {
         if (response.hasOwnProperty("data")) {
             container.innerHTML = "";
             response.data.forEach(function (item) {
                 const li = document.createElement("li");
                 const button = document.createElement("button");
+                const url = String(pattern.replace(/__id__/, String(item.id)))
                 button.type = "button";
                 button.classList.add("button", "button-secondary");
                 button.innerHTML = item.meta.text_for_link;
-                button.dataset.id = item.id;
-                button.dataset.url = prefix + item.id;
+                button.dataset.url = url;
+                button.dataset.id = String(item.id);
                 button.addEventListener("click", EntityListWithSearch.selectEntity);
                 li.append(button);
                 container.append(li);

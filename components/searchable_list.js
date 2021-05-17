@@ -30,7 +30,7 @@ const SearchableList = {
                 const button = document.createElement("button");
                 button.type = "button";
                 button.classList.add("button", "button-secondary");
-                button.innerHTML = item.attributes.name;
+                button.innerHTML = item.meta.text_for_link;
                 button.dataset.id = item.id;
                 button.addEventListener("click", SearchableList.handleClick);
                 li.append(button);

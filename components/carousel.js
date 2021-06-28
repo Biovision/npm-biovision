@@ -40,7 +40,8 @@ const Carousel = {
             "current": 0,
             "touchData": {"x": null, "y": null},
             "lastSlide": 0,
-            "ready": false
+            "ready": false,
+            'minWidth': element.dataset.minWidth
         };
         if (element.hasAttribute("data-type")) {
             slider["type"] = element.getAttribute("data-type");
@@ -144,6 +145,11 @@ const Carousel = {
             slider["current"] = 0;
         }
         slider["lastSlide"] = Date.now();
+        if (slider.minWidth) {
+            if (window.innerWidth < slider.minWidth) {
+                slider['current'] = 0;
+            }
+        }
 
         Carousel.rearrange(slider);
     },
@@ -156,6 +162,11 @@ const Carousel = {
         slider["current"]--;
         if (slider["current"] < 0) {
             slider["current"] = slider["maxItem"];
+        }
+        if (slider.minWidth) {
+            if (window.innerWidth < slider.minWidth) {
+                slider['current'] = 0;
+            }
         }
 
         Carousel.rearrange(slider);

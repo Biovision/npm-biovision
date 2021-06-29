@@ -41,7 +41,8 @@ const Carousel = {
             "touchData": {"x": null, "y": null},
             "lastSlide": 0,
             "ready": false,
-            'minWidth': element.dataset.minWidth
+            'minWidth': element.dataset.minWidth,
+            'thumbnails': element.querySelectorAll(".thumbnails button")
         };
         if (element.hasAttribute("data-type")) {
             slider["type"] = element.getAttribute("data-type");
@@ -59,6 +60,11 @@ const Carousel = {
         }
         if (slider["nextButton"]) {
             slider["nextButton"].addEventListener("click", Carousel.clickedNext);
+        }
+        if (slider['thumbnails']) {
+            slider['thumbnails'].forEach(function (button) {
+                button.addEventListener('click', Carousel.clickedThumbnail);
+            });
         }
         slider["transition"] = parseFloat(getComputedStyle(slider["items"][0]).transitionDuration) * 1000;
         slider["maxItem"] = slider["items"].length - 1;
@@ -85,7 +91,7 @@ const Carousel = {
                 Carousel.processCycle(slider);
                 break;
             default:
-                console.log("Unknown carousel type: " + slider["type"]);
+                console.warn("Unknown carousel type: " + slider["type"]);
                 Carousel.newOffset(slider);
         }
         slider["ready"] = true;
@@ -107,6 +113,29 @@ const Carousel = {
     clickedNext: function (event) {
         const slider = Carousel.getSlider(event.target);
         Carousel.nextItem(slider);
+    },
+    /**
+     * Handler for clicking thumbnail button
+     *
+     * @param {Event} event
+     */
+    clickedThumbnail: function (event) {
+        const button = event.target.closest('button');
+        const slider = Carousel.getSlider(button);
+        const newIndex = parseInt(button.dataset.index);
+        const list = slider["container"];
+        const element = list.querySelector(`.carousel-item[data-index="${newIndex}"]`);
+        const styles = getComputedStyle(element);
+        const clear = function() {
+            element.style.marginLeft = null;
+        };
+        element.style.transitionDuration = 0;
+        const rightMargin = styles.marginRight;
+        const slideWidth = element.offsetWidth + parseInt(rightMargin);
+        element.style.marginLeft = String(-slideWidth) + "px";
+        list.prepend(element);
+        element.style.transitionDuration = null;
+        window.setTimeout(clear, 50);
     },
     /**
      * Get wrapper for slider

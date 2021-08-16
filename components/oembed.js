@@ -34,7 +34,7 @@ const Oembed = {
     receive: function (remoteUrl) {
         const div = document.createElement("div");
         const url = "/oembed?url=" + encodeURIComponent(remoteUrl);
-        const query = Biovision.jsonAjaxRequest("get", url, function () {
+        const query = Biovision.jsonAjaxRequest("post", url, function () {
             const response = JSON.parse(this.responseText);
             if (response.hasOwnProperty("meta")) {
                 const doc = new DOMParser().parseFromString(response["meta"]["code"], "text/html");
